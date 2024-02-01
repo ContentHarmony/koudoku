@@ -38,6 +38,7 @@ module Koudoku::Subscription
               Stripe::Subscription.update(self.stripe_subscription_id, {
                 plan: self.plan.stripe_id,
                 quantity: team.subscription_quantity,
+                proration_behavior: "none",
               })
             else
               subscription = create_subscription(customer)
