@@ -58,7 +58,7 @@ module Koudoku::Subscription
 
             # delete the subscription.
             subscription = Stripe::Subscription.retrieve(self.stripe_subscription_id)
-            subscription.delete
+            subscription.delete #might break in stripe gem v7 https://github.com/stripe/stripe-ruby/blob/master/CHANGELOG.md#700---2022-08-02
             self.stripe_subscription_id = nil
 
             finalize_cancelation!
@@ -146,7 +146,7 @@ module Koudoku::Subscription
         # fetch the customer.
         customer = Stripe::Customer.retrieve(self.stripe_id)
         customer.source = self.credit_card_token
-        customer.save
+        customer.save #might break in Stripe gem v8 https://github.com/stripe/stripe-ruby/wiki/Migration-guide-for-v8
 
         # update the last four based on this new card.
         self.last_four = customer.sources.retrieve(customer.default_source).last4
